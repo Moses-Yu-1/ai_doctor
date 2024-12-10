@@ -14,6 +14,9 @@ import { defaultSettings, SettingsProvider } from 'src/components/settings';
 
 import { AuthProvider } from 'src/auth/context/jwt';
 
+import { useEffect } from 'react';
+import axios from 'axios';
+
 // ----------------------------------------------------------------------
 
 export default function App() {
@@ -21,7 +24,7 @@ export default function App() {
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const query = queryParams.get('query');
+  const query = queryParams.get('key_string');
 
   return (
     <AuthProvider>

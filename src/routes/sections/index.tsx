@@ -19,7 +19,7 @@ const PageFour = lazy(() => import('src/pages/dashboard/four'));
 // ----------------------------------------------------------------------
 
 type Props = {
-  query?: any;
+  query?: string;
 };
 
 export function Router({ query }: Props) {
@@ -63,16 +63,7 @@ export function Router({ query }: Props) {
   return useRoutes([
     {
       path: '/',
-      element: <Navigate to={CONFIG.auth.redirectPath} replace />,
-    },
-
-    // Auth
-    ...authRoutes,
-
-    // Dashboard
-    {
-      path: 'dashboard',
-      element: CONFIG.auth.skip ? <>{layoutContent}</> : <AuthGuard>{layoutContent}</AuthGuard>,
+      element: layoutContent,
       children: [
         { element: <IndexPage apiData={apiData} />, index: true },
         {
@@ -86,11 +77,5 @@ export function Router({ query }: Props) {
         },
       ],
     },
-
-    // Main
-    ...mainRoutes,
-
-    // No match
-    { path: '*', element: <Navigate to="/404" replace /> },
   ]);
 }
