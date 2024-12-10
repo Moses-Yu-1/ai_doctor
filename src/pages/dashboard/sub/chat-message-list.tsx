@@ -37,7 +37,7 @@ export function ChatMessageList({ messages = [] }: Props) {
           }}
         >
           {messages.map((message: any) => (
-            <ChatMessageItem key={message.id} message={message.text} me={message.me} />
+            <ChatMessageItem key={message.id} message={message.data} type={message.type} />
           ))}
         </Scrollbar>
       </Box>

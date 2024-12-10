@@ -65,8 +65,8 @@ export const navData = [
         icon: ICONS.user,
         children: [
           { title: 'Case1', path: paths.dashboard.group.root },
-          { title: 'Case2', path: paths.dashboard.group.five },
-          { title: 'Case3', path: paths.dashboard.group.six },
+          // { title: 'Case2', path: paths.dashboard.group.five },
+          // { title: 'Case3', path: paths.dashboard.group.six },
         ],
       },
     ],

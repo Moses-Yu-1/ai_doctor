@@ -23,9 +23,11 @@ export type NavVerticalProps = NavSectionProps & {
     topArea?: React.ReactNode;
     bottomArea?: React.ReactNode;
   };
+  user: any;
 };
 
 export function NavVertical({
+  user,
   sx,
   data,
   slots,
@@ -45,7 +47,7 @@ export function NavVertical({
       )} */}
 
       <Scrollbar fillContent>
-        {slots?.bottomArea ?? <NavUpgrade />}
+        {slots?.bottomArea ?? <NavUpgrade userData={user} />}
 
         <NavSectionVertical data={data} sx={{ px: 2, flex: '1 1 auto' }} {...other} />
       </Scrollbar>

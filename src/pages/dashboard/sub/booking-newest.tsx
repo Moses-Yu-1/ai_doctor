@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Box from '@mui/material/Box';
 
 import { Carousel, useCarousel } from 'src/components/carousel';
-import { SummaryDetailsContent } from './SummaryDetailsContent';
+import { SummaryFollowUpContent } from './SummaryFollowUpContent';
 import { FollowUp } from '../piece/FollowUp';
 
 // ----------------------------------------------------------------------
@@ -36,7 +36,6 @@ export function BookingNewest({ list, sx, ...other }: Props) {
   const [followUP_idx, setFollowUP_idx] = useState(0);
   const handleClick = (index: any) => {
     setFollowUP_idx(index);
-    console.log('Clicked item:', index);
   };
 
   return (
@@ -49,8 +48,12 @@ export function BookingNewest({ list, sx, ...other }: Props) {
         <Carousel carousel={carousel}>
           {list.map((item, index) => (
             <Box key={index} sx={{ cursor: 'pointer' }} onClick={() => handleClick(index)}>
-              <SummaryDetailsContent
-                data={{ title: item.followup_summary, detail: item.followup_summary }}
+              <SummaryFollowUpContent
+                data={{
+                  title: item.followup_summary,
+                  detail: item.followup_summary,
+                  date: item.date,
+                }}
               />
             </Box>
           ))}

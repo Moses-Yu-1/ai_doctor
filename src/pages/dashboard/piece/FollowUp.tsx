@@ -2,6 +2,7 @@ import { Box, Typography } from '@mui/material';
 import { SummaryDetailsContent } from '../sub/SummaryDetailsContent';
 import { History } from '../sub/History';
 import { ChatMessageList } from '../sub/chat-message-list';
+import { ChatMessageNone } from '../sub/chat-message-none';
 
 // ----------------------------------------------------------------------
 
@@ -55,95 +56,11 @@ export function FollowUp({ detail }: Props) {
           <SummaryDetailsContent data={summary_data} />
         </Box>
         <Box sx={{ flex: '35%', px: '8px' }}>
-          <ChatMessageList
-            messages={[
-              {
-                id: 0,
-                me: false,
-                text: '어쩌구저쩌구',
-              },
-              {
-                id: 1,
-                me: false,
-                text: '222어쩌구저쩌구',
-              },
-              {
-                id: 2,
-                me: true,
-                text: '33333333333',
-              },
-              {
-                id: 1,
-                me: false,
-                text: '222어쩌구저쩌구',
-              },
-              {
-                id: 2,
-                me: true,
-                text: '33333333333',
-              },
-              {
-                id: 1,
-                me: false,
-                text: '222어쩌구저쩌구',
-              },
-              {
-                id: 2,
-                me: true,
-                text: '33333333333',
-              },
-              {
-                id: 1,
-                me: false,
-                text: '222어쩌구저쩌구',
-              },
-              {
-                id: 2,
-                me: true,
-                text: '33333333333',
-              },
-              {
-                id: 1,
-                me: false,
-                text: '222어쩌구저쩌구',
-              },
-              {
-                id: 2,
-                me: true,
-                text: '33333333333',
-              },
-              {
-                id: 1,
-                me: false,
-                text: '222어쩌구저쩌구',
-              },
-              {
-                id: 2,
-                me: true,
-                text: '33333333333',
-              },
-              {
-                id: 1,
-                me: false,
-                text: '222어쩌구저쩌구',
-              },
-              {
-                id: 2,
-                me: true,
-                text: '33333333333',
-              },
-              {
-                id: 1,
-                me: false,
-                text: '222어쩌구저쩌구',
-              },
-              {
-                id: 2,
-                me: true,
-                text: '33333333333',
-              },
-            ]}
-          />
+          {detail.chat_log ? (
+            <ChatMessageList messages={detail.chat_log.chats} />
+          ) : (
+            <ChatMessageNone />
+          )}
         </Box>
       </Box>
 

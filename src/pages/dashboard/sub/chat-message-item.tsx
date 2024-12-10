@@ -18,10 +18,11 @@ import { getMessage } from './utils/get-message';
 
 type Props = {
   message: string;
-  me: boolean;
+  // me: boolean;
+  type: string;
 };
 
-export function ChatMessageItem({ message, me }: Props) {
+export function ChatMessageItem({ message, type }: Props) {
   const renderBody = (
     <Stack
       sx={{
@@ -31,7 +32,7 @@ export function ChatMessageItem({ message, me }: Props) {
         borderRadius: 1,
         typography: 'body2',
         bgcolor: 'background.neutral',
-        ...(me ? { color: 'grey.800', bgcolor: 'primary.lighter' } : {}),
+        ...(type === 'user' ? { color: 'grey.800', bgcolor: 'primary.lighter' } : {}),
       }}
     >
       {message}
@@ -39,16 +40,16 @@ export function ChatMessageItem({ message, me }: Props) {
   );
 
   return (
-    <Stack direction="row" justifyContent={me ? 'flex-end' : 'unset'} sx={{ mb: 1 }}>
-      {!me && (
+    <Stack direction="row" justifyContent={type === 'user' ? 'flex-end' : 'unset'} sx={{ mb: 1 }}>
+      {type !== 'user' && (
         <Avatar
           src="{https://api-dev-minimal-v610.pages.dev/assets/images/avatar/avatar-1.webp}"
           sx={{ width: 32, height: 32, mr: 2 }}
         />
       )}
 
-      <Stack alignItems={me ? 'flex-end' : 'flex-start'}>
-        {me ? 'me' : 'AI Doctor'}
+      <Stack alignItems={type === 'user' ? 'flex-end' : 'flex-start'}>
+        {type === 'user' ? 'me' : 'AI Doctor'}
         <Stack
           direction="row"
           alignItems="center"

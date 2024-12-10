@@ -6,13 +6,23 @@ import Typography from '@mui/material/Typography';
 // ----------------------------------------------------------------------
 type Props = {
   data: any;
+  height?: string;
 };
 
-export function SummaryDetailsContent({ data }: Props) {
+export function SummaryDetailsContent({ data, height = '420px' }: Props) {
   return (
     <Grid container spacing={3}>
       <Grid xs={12}>
-        <Card sx={{ p: 3, gap: 3, display: 'flex', flexDirection: 'column' }}>
+        <Card
+          sx={{
+            p: 3,
+            gap: 3,
+            display: 'flex',
+            flexDirection: 'column',
+            height,
+            maxHeight: height,
+          }}
+        >
           <Stack spacing={2}>
             {data?.title && <Typography variant="h6">{data?.title}</Typography>}
 

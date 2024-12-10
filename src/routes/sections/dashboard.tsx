@@ -8,21 +8,23 @@ import { LoadingScreen } from 'src/components/loading-screen';
 
 import { AuthGuard } from 'src/auth/guard';
 
+import { apiData, ApiData } from 'src/data/apiData';
+
 // ----------------------------------------------------------------------
 
 const IndexPage = lazy(() => import('src/pages/dashboard/one'));
-const PageTwo = lazy(() => import('src/pages/dashboard/two'));
-const PageThree = lazy(() => import('src/pages/dashboard/three'));
 const PageFour = lazy(() => import('src/pages/dashboard/four'));
-const PageFive = lazy(() => import('src/pages/dashboard/five'));
-const PageSix = lazy(() => import('src/pages/dashboard/six'));
 
 // ----------------------------------------------------------------------
 
 const layoutContent = (
-  <DashboardLayout>
+  <DashboardLayout
+    cases={apiData.medical_info.cases}
+    user={{ name: apiData.name, general_info: apiData.general_info }}
+  >
     <Suspense fallback={<LoadingScreen />}>
       <Outlet />
+      <ApiData />
     </Suspense>
   </DashboardLayout>
 );
@@ -32,15 +34,14 @@ export const dashboardRoutes = [
     path: 'dashboard',
     element: CONFIG.auth.skip ? <>{layoutContent}</> : <AuthGuard>{layoutContent}</AuthGuard>,
     children: [
-      { element: <IndexPage />, index: true },
-      { path: 'two', element: <PageTwo /> },
-      { path: 'three', element: <PageThree /> },
+      { element: <IndexPage apiData={apiData} />, index: true },
       {
-        path: 'group',
+        path: 'group/:id',
         children: [
-          { element: <PageFour />, index: true },
-          { path: 'five', element: <PageFive /> },
-          { path: 'six', element: <PageSix /> },
+          {
+            element: <PageFour apiData={apiData} />,
+            index: true,
+          },
         ],
       },
     ],

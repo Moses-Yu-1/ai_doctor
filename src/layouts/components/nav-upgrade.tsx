@@ -20,7 +20,7 @@ import { useMockedUser } from 'src/auth/hooks';
 
 // ----------------------------------------------------------------------
 
-export function NavUpgrade({ sx, ...other }: StackProps) {
+export function NavUpgrade({ userData, sx, ...other }: StackProps) {
   const { user } = useMockedUser();
 
   return (
@@ -53,7 +53,7 @@ export function NavUpgrade({ sx, ...other }: StackProps) {
             noWrap
             sx={{ color: 'var(--layout-nav-text-primary-color)' }}
           >
-            {user?.displayName} | {user?.age} | {user?.gender}
+            {userData?.name} | {userData?.general_info.age} | {userData?.general_info.gender}
           </Typography>
 
           <Typography
@@ -61,7 +61,7 @@ export function NavUpgrade({ sx, ...other }: StackProps) {
             noWrap
             sx={{ color: 'var(--layout-nav-text-disabled-color)' }}
           >
-            {user?.country} | {user?.job}
+            {userData?.general_info.country} | {userData?.general_info.job}
           </Typography>
         </Stack>
 

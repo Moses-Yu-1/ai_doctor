@@ -1,3 +1,5 @@
+// import { paths } from 'src/routes/paths';
+
 import type { NavSectionProps } from 'src/components/nav-section';
 import type { Theme, SxProps, Breakpoint } from '@mui/material/styles';
 
@@ -12,6 +14,8 @@ import { _contacts, _notifications } from 'src/_mock';
 
 import { Logo } from 'src/components/logo';
 import { useSettingsContext } from 'src/components/settings';
+import { CONFIG } from 'src/config-global';
+import { SvgColor } from 'src/components/svg-color';
 
 import { Main } from './main';
 import { NavMobile } from './nav-mobile';
@@ -30,10 +34,51 @@ import { SettingsButton } from '../components/settings-button';
 import { LanguagePopover } from '../components/language-popover';
 import { ContactsPopover } from '../components/contacts-popover';
 import { WorkspacesPopover } from '../components/workspaces-popover';
-import { navData as dashboardNavData } from '../config-nav-dashboard';
+// import { dashboardNavData } from '../config-nav-dashboard';
+// import { navData as dashboardNavData } from '../config-nav-dashboard';
 import { NotificationsDrawer } from '../components/notifications-drawer';
 
 // ----------------------------------------------------------------------
+
+// ----------------------------------------------------------------------
+
+const ROOTS = {
+  AUTH: '/auth',
+  DASHBOARD: '/dashboard',
+};
+
+// ----------------------------------------------------------------------
+const icon = (name: string) => (
+  <SvgColor src={`${CONFIG.assetsDir}/assets/icons/navbar/${name}.svg`} />
+);
+const ICONS = {
+  job: icon('ic-job'),
+  blog: icon('ic-blog'),
+  chat: icon('ic-chat'),
+  mail: icon('ic-mail'),
+  user: icon('ic-user'),
+  file: icon('ic-file'),
+  lock: icon('ic-lock'),
+  tour: icon('ic-tour'),
+  order: icon('ic-order'),
+  label: icon('ic-label'),
+  blank: icon('ic-blank'),
+  kanban: icon('ic-kanban'),
+  folder: icon('ic-folder'),
+  course: icon('ic-course'),
+  banking: icon('ic-banking'),
+  booking: icon('ic-booking'),
+  invoice: icon('ic-invoice'),
+  product: icon('ic-product'),
+  calendar: icon('ic-calendar'),
+  disabled: icon('ic-disabled'),
+  external: icon('ic-external'),
+  menuItem: icon('ic-menu-item'),
+  ecommerce: icon('ic-ecommerce'),
+  analytics: icon('ic-analytics'),
+  dashboard: icon('ic-dashboard'),
+  parameter: icon('ic-parameter'),
+};
 
 export type DashboardLayoutProps = {
   sx?: SxProps<Theme>;
@@ -44,9 +89,88 @@ export type DashboardLayoutProps = {
   data?: {
     nav?: NavSectionProps['data'];
   };
+  user?: any;
+  cases?: any;
 };
 
-export function DashboardLayout({ sx, children, header, data }: DashboardLayoutProps) {
+export function DashboardLayout({ sx, children, header, data, user, cases }: DashboardLayoutProps) {
+  const group_list: { [key: string]: string } = { root: `${ROOTS.DASHBOARD}/group` };
+  Object.keys(cases).forEach((i) => {
+    group_list[i] = `${ROOTS.DASHBOARD}/group/${i}`;
+  });
+  const paths = {
+    faqs: '/faqs',
+    minimalStore: 'https://mui.com/store/items/minimal-dashboard/',
+    // AUTH
+    auth: {
+      amplify: {
+        signIn: `${ROOTS.AUTH}/amplify/sign-in`,
+        verify: `${ROOTS.AUTH}/amplify/verify`,
+        signUp: `${ROOTS.AUTH}/amplify/sign-up`,
+        updatePassword: `${ROOTS.AUTH}/amplify/update-password`,
+        resetPassword: `${ROOTS.AUTH}/amplify/reset-password`,
+      },
+      jwt: {
+        signIn: `${ROOTS.AUTH}/jwt/sign-in`,
+        signUp: `${ROOTS.AUTH}/jwt/sign-up`,
+      },
+      firebase: {
+        signIn: `${ROOTS.AUTH}/firebase/sign-in`,
+        verify: `${ROOTS.AUTH}/firebase/verify`,
+        signUp: `${ROOTS.AUTH}/firebase/sign-up`,
+        resetPassword: `${ROOTS.AUTH}/firebase/reset-password`,
+      },
+      auth0: {
+        signIn: `${ROOTS.AUTH}/auth0/sign-in`,
+      },
+      supabase: {
+        signIn: `${ROOTS.AUTH}/supabase/sign-in`,
+        verify: `${ROOTS.AUTH}/supabase/verify`,
+        signUp: `${ROOTS.AUTH}/supabase/sign-up`,
+        updatePassword: `${ROOTS.AUTH}/supabase/update-password`,
+        resetPassword: `${ROOTS.AUTH}/supabase/reset-password`,
+      },
+    },
+    // DASHBOARD
+    dashboard: {
+      root: ROOTS.DASHBOARD,
+      two: `${ROOTS.DASHBOARD}/two`,
+      three: `${ROOTS.DASHBOARD}/three`,
+      group: group_list,
+    },
+  };
+
+  const children_list: { title: string; path: string }[] = [];
+  Object.keys(cases).forEach((i) => {
+    children_list.push({
+      title: `${Number(i) + 1}. ${cases[i].CC}`,
+      path: `${paths.dashboard.group[i]}`,
+    });
+  });
+  const dashboardNavData = [
+    {
+      subheader: 'Main',
+      items: [
+        {
+          title: 'Main',
+          path: paths.dashboard.root,
+          icon: ICONS.dashboard,
+        },
+      ],
+    },
+    {
+      subheader: 'Cases',
+      items: [
+        {
+          title: 'cases',
+          path: paths.dashboard.group.root,
+          icon: ICONS.user,
+          children: children_list,
+        },
+      ],
+    },
+  ];
+
   const theme = useTheme();
 
   const mobileNavOpen = useBoolean();
@@ -179,6 +303,7 @@ export function DashboardLayout({ sx, children, header, data }: DashboardLayoutP
       sidebarSection={
         isNavHorizontal ? null : (
           <NavVertical
+            user={user}
             data={navData}
             isNavMini={isNavMini}
             layoutQuery={layoutQuery}
