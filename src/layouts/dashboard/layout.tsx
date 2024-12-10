@@ -1,42 +1,25 @@
 // import { paths } from 'src/routes/paths';
 
+import { useLocation } from 'react-router';
+
 import type { NavSectionProps } from 'src/components/nav-section';
 import type { Theme, SxProps, Breakpoint } from '@mui/material/styles';
 
-import Box from '@mui/material/Box';
-import Alert from '@mui/material/Alert';
 import { useTheme } from '@mui/material/styles';
-import { iconButtonClasses } from '@mui/material/IconButton';
-
-import { useBoolean } from 'src/hooks/use-boolean';
 
 import { _contacts, _notifications } from 'src/_mock';
 
-import { Logo } from 'src/components/logo';
 import { useSettingsContext } from 'src/components/settings';
 import { CONFIG } from 'src/config-global';
 import { SvgColor } from 'src/components/svg-color';
 
 import { Main } from './main';
-import { NavMobile } from './nav-mobile';
 import { layoutClasses } from '../classes';
 import { NavVertical } from './nav-vertical';
-import { NavHorizontal } from './nav-horizontal';
 import { _account } from '../config-nav-account';
-import { Searchbar } from '../components/searchbar';
 import { _workspaces } from '../config-nav-workspace';
-import { MenuButton } from '../components/menu-button';
 import { LayoutSection } from '../core/layout-section';
-import { HeaderSection } from '../core/header-section';
 import { StyledDivider, useNavColorVars } from './styles';
-import { AccountDrawer } from '../components/account-drawer';
-import { SettingsButton } from '../components/settings-button';
-import { LanguagePopover } from '../components/language-popover';
-import { ContactsPopover } from '../components/contacts-popover';
-import { WorkspacesPopover } from '../components/workspaces-popover';
-// import { dashboardNavData } from '../config-nav-dashboard';
-// import { navData as dashboardNavData } from '../config-nav-dashboard';
-import { NotificationsDrawer } from '../components/notifications-drawer';
 
 // ----------------------------------------------------------------------
 
@@ -94,9 +77,14 @@ export type DashboardLayoutProps = {
 };
 
 export function DashboardLayout({ sx, children, header, data, user, cases }: DashboardLayoutProps) {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const query = queryParams.get('query');
+
   const group_list: { [key: string]: string } = { root: `${ROOTS.DASHBOARD}/group` };
   Object.keys(cases).forEach((i) => {
-    group_list[i] = `${ROOTS.DASHBOARD}/group/${i}`;
+    if (query) group_list[i] = `${ROOTS.DASHBOARD}/group/${i}?query=${query}`;
+    else group_list[i] = `${ROOTS.DASHBOARD}/group/${i}`;
   });
   const paths = {
     faqs: '/faqs',
@@ -133,7 +121,7 @@ export function DashboardLayout({ sx, children, header, data, user, cases }: Das
     },
     // DASHBOARD
     dashboard: {
-      root: ROOTS.DASHBOARD,
+      root: `${ROOTS.DASHBOARD}?query=${query}`,
       two: `${ROOTS.DASHBOARD}/two`,
       three: `${ROOTS.DASHBOARD}/three`,
       group: group_list,
@@ -173,8 +161,6 @@ export function DashboardLayout({ sx, children, header, data, user, cases }: Das
 
   const theme = useTheme();
 
-  const mobileNavOpen = useBoolean();
-
   const settings = useSettingsContext();
 
   const navColorVars = useNavColorVars(theme, settings);
@@ -185,7 +171,6 @@ export function DashboardLayout({ sx, children, header, data, user, cases }: Das
 
   const isNavMini = settings.navLayout === 'mini';
   const isNavHorizontal = settings.navLayout === 'horizontal';
-  const isNavVertical = isNavMini || settings.navLayout === 'vertical';
 
   return (
     <LayoutSection

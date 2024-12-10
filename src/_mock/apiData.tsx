@@ -274,9 +274,3 @@ export const apiData = {
     user_id: 2,
   },
 };
-
-export function ApiData() {
-  console.log(apiData);
-
-  return <></>;
-}

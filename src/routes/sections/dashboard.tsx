@@ -8,7 +8,7 @@ import { LoadingScreen } from 'src/components/loading-screen';
 
 import { AuthGuard } from 'src/auth/guard';
 
-import { apiData, ApiData } from 'src/data/apiData';
+import { apiData } from 'src/_mock/apiData';
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +24,6 @@ const layoutContent = (
   >
     <Suspense fallback={<LoadingScreen />}>
       <Outlet />
-      <ApiData />
     </Suspense>
   </DashboardLayout>
 );
