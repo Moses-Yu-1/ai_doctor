@@ -33,9 +33,12 @@ export function BookingNewest({ list, sx, ...other }: Props) {
     slidesToShow: { xs: 1, sm: 2, md: 2, lg: 2 },
   });
 
+  const [id, setId] = useState(0);
   const [followUP_idx, setFollowUP_idx] = useState(0);
   const handleClick = (index: any) => {
     setFollowUP_idx(index);
+
+    setId(index);
   };
 
   return (
@@ -54,6 +57,7 @@ export function BookingNewest({ list, sx, ...other }: Props) {
                   detail: item.followup_summary,
                   date: item.date,
                 }}
+                choice={[index, id]}
               />
             </Box>
           ))}

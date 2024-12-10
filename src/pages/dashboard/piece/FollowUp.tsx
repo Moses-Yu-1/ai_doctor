@@ -47,15 +47,22 @@ export function FollowUp({ detail }: Props) {
 
   return (
     <>
-      <Typography variant="h4" sx={{ mb: '8px' }}>
-        {detail.followup_summary}
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ flex: '80%' }}>
+          <Typography variant="h4" sx={{ mb: '8px' }}>
+            {detail.followup_summary}
+          </Typography>
+        </Box>
+        <Box sx={{ flex: '20%', paddingLeft: '16px', textAlign: 'right' }}>
+          <Typography variant="h6">{detail.date}</Typography>
+        </Box>
+      </Box>
 
       <Box sx={{ display: 'flex' }}>
         <Box sx={{ flex: '65%' }}>
           <SummaryDetailsContent data={summary_data} />
         </Box>
-        <Box sx={{ flex: '35%', px: '8px' }}>
+        <Box sx={{ flex: '35%', paddingLeft: '16px' }}>
           {detail.chat_log ? (
             <ChatMessageList messages={detail.chat_log.chats} />
           ) : (

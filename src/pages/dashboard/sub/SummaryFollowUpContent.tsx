@@ -7,15 +7,25 @@ import { Box } from '@mui/material';
 // ----------------------------------------------------------------------
 type Props = {
   data: any;
+  choice: any;
 };
 
-export function SummaryFollowUpContent({ data }: Props) {
+export function SummaryFollowUpContent({ data, choice }: Props) {
   return (
     <Grid container spacing={3}>
       <Grid xs={12}>
-        <Card sx={{ p: 3, gap: 3, display: 'flex', flexDirection: 'column', height: '200px' }}>
+        <Card
+          sx={{
+            p: 3,
+            gap: 3,
+            display: 'flex',
+            flexDirection: 'column',
+            height: '200px',
+            background: choice[0] === choice[1] ? '#f4f6f8' : 'white',
+          }}
+        >
           <Stack spacing={2}>
-            <Box sx={{ display: 'flex' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Box sx={{ flex: '65%' }}>
                 {data?.title && <Typography variant="h6">{data?.title}</Typography>}
               </Box>

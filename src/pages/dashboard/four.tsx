@@ -65,6 +65,7 @@ export default function Page({ apiData }: Props) {
       <Box
         sx={{
           margin: '72px',
+          // marginBottom: '0',
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -88,7 +89,7 @@ export default function Page({ apiData }: Props) {
             <Box sx={{ flex: '65%' }}>
               <SummaryDetailsContent data={summary_data} />
             </Box>
-            <Box sx={{ flex: '35%', px: '8px' }}>
+            <Box sx={{ flex: '35%', paddingLeft: '16px' }}>
               {apiData.medical_info.cases[idx].chat_log ? (
                 <ChatMessageList messages={apiData.medical_info.cases[idx].chat_log.chats} />
               ) : (

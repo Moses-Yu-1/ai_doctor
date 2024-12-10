@@ -5,7 +5,7 @@ import { CONFIG } from 'src/config-global';
 import { apiData } from 'src/_mock/apiData';
 
 import { DashboardLayout } from 'src/layouts/dashboard';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { LoadingScreen } from 'src/components/loading-screen';
 
 import { authRoutes } from './auth';
@@ -24,6 +24,30 @@ type Props = {
 
 export function Router({ query }: Props) {
   console.log(query);
+
+  // const [apiData, setApiData] = useState(null);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
+
+  // useEffect(() => {
+  //   // 데이터 요청을 위한 API 호출
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(`https://api.example.com/data?key=${query}`);
+  //       if (!response.ok) {
+  //         throw new Error('Data fetching failed');
+  //       }
+  //       const result = await response.json();
+  //       setApiData(result); // 받아온 데이터 상태에 저장
+  //     } catch (err) {
+  //       setError(err.message); // 오류 처리
+  //     } finally {
+  //       setLoading(false); // 로딩 끝
+  //     }
+  //   };
+
+  //   fetchData(); // 컴포넌트가 마운트될 때 데이터 요청
+  // }, [query]); // key 값이 바뀔 때마다 데이터를 새로 요청
 
   const layoutContent = (
     <DashboardLayout

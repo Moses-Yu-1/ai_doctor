@@ -19,7 +19,7 @@ import { NavVertical } from './nav-vertical';
 import { _account } from '../config-nav-account';
 import { _workspaces } from '../config-nav-workspace';
 import { LayoutSection } from '../core/layout-section';
-import { StyledDivider, useNavColorVars } from './styles';
+import { useNavColorVars } from './styles';
 
 // ----------------------------------------------------------------------
 
