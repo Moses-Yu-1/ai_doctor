@@ -1,16 +1,22 @@
 import { Box, Typography } from '@mui/material';
+import { useParams } from 'react-router';
 
 import { SummaryDetailsContent } from './sub/SummaryDetailsContent';
 import { History } from './sub/History';
+
+import { BookingNewest } from './sub/booking-newest';
+import { ChatMessageList } from './sub/chat-message-list';
+import { ChatMessageNone } from './sub/chat-message-none';
 import { CaseList } from './sub/CaseList';
 
 // ----------------------------------------------------------------------
 
 type Props = {
   apiData?: any;
+  query: string | null;
 };
 
-export default function Page({ apiData }: Props) {
+export default function Page({ apiData, query }: Props) {
   const summary_data = {
     title: 'Occaecati est',
     detail:
@@ -48,8 +54,7 @@ export default function Page({ apiData }: Props) {
   }));
 
   return (
-    <>
-      <Box
+    <Box
         sx={{
           margin: '72px',
         }}
@@ -87,9 +92,8 @@ export default function Page({ apiData }: Props) {
           <Typography variant="h4" sx={{ mb: '8px' }}>
             Cases
           </Typography>
-          <CaseList title="News" list={case_data} />
+          {case_data.length > 0 ? <CaseList title="News" list={case_data} /> : null}
         </Box>
       </Box>
-    </>
   );
 }

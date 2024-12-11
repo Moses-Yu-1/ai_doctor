@@ -43,7 +43,8 @@ export function FollowUp({ detail }: Props) {
       category,
       content,
     };
-  });
+  }).filter((item) => item.content !== null && item.content !== '');
+  
 
   return (
     <>

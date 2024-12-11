@@ -48,12 +48,10 @@ type RowItemProps = {
 
 function RowItem({ row, isLast5 }: RowItemProps) {
   return (
-    <>
-      <TableRow style={{ backgroundColor: isLast5 ? '#fafafa' : 'transparent' }}>
-        <TableCell>{row.category}</TableCell>
+    <TableRow style={{ backgroundColor: isLast5 ? '#fafafa' : 'transparent' }}>
+      <TableCell>{row.category}</TableCell>
 
-        <TableCell width="75%">{row.content}</TableCell>
-      </TableRow>
-    </>
+      <TableCell width="75%">{row.content}</TableCell>
+    </TableRow>
   );
 }

@@ -7,6 +7,7 @@ import Avatar from '@mui/material/Avatar';
 import ListItemText from '@mui/material/ListItemText';
 
 import { Scrollbar } from 'src/components/scrollbar';
+import { useNavigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -23,12 +24,20 @@ type Props = CardProps & {
 };
 
 export function CaseList({ title, subheader, list, ...other }: Props) {
+  const navigate = useNavigate();
+  const queryParams = new URLSearchParams(window.location.search);
+  const query = queryParams.get('key_string');
+
   return (
     <Card {...other}>
       <Scrollbar>
         <Box sx={{ minWidth: 640 }}>
           {list.map((item) => (
-            <Item key={item.id} item={item} />
+            <Item
+              key={item.id}
+              item={item}
+              onClick={() => navigate(`/group/${item.id}${query ? `?key_string=${query}` : ''}`)}
+            />
           ))}
         </Box>
       </Scrollbar>
@@ -52,6 +61,7 @@ function Item({ item, sx, ...other }: ItemProps) {
         display: 'flex',
         alignItems: 'center',
         borderBottom: (theme) => `dashed 1px ${theme.vars.palette.divider}`,
+        cursor: 'pointer', // Add this line
         ...sx,
       }}
       {...other}

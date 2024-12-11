@@ -74,56 +74,24 @@ export type DashboardLayoutProps = {
   };
   user?: any;
   cases?: any;
+  query: string | null;
 };
 
-export function DashboardLayout({ sx, children, header, data, user, cases }: DashboardLayoutProps) {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const query = queryParams.get('query');
-
-  const group_list: { [key: string]: string } = { root: `${ROOTS.DASHBOARD}/group` };
+export function DashboardLayout({ sx, children, header, data, user, cases, query }: DashboardLayoutProps) {
+  // const location = useLocation();
+  // const queryParams = new URLSearchParams(location.search);
+  // const query = queryParams.get('query');
+  
+  const group_list: { [key: string]: string } = { root: `/group` };
   Object.keys(cases).forEach((i) => {
-    if (query) group_list[i] = `${ROOTS.DASHBOARD}/group/${i}?query=${query}`;
-    else group_list[i] = `${ROOTS.DASHBOARD}/group/${i}`;
+    if (query) group_list[i] = `/group/${i}/?key_string=${query}`;
+    else group_list[i] = `/group/${i}`;
   });
   const paths = {
-    faqs: '/faqs',
-    minimalStore: 'https://mui.com/store/items/minimal-dashboard/',
-    // AUTH
-    // auth: {
-    //   amplify: {
-    //     signIn: `${ROOTS.AUTH}/amplify/sign-in`,
-    //     verify: `${ROOTS.AUTH}/amplify/verify`,
-    //     signUp: `${ROOTS.AUTH}/amplify/sign-up`,
-    //     updatePassword: `${ROOTS.AUTH}/amplify/update-password`,
-    //     resetPassword: `${ROOTS.AUTH}/amplify/reset-password`,
-    //   },
-    //   jwt: {
-    //     signIn: `${ROOTS.AUTH}/jwt/sign-in`,
-    //     signUp: `${ROOTS.AUTH}/jwt/sign-up`,
-    //   },
-    //   firebase: {
-    //     signIn: `${ROOTS.AUTH}/firebase/sign-in`,
-    //     verify: `${ROOTS.AUTH}/firebase/verify`,
-    //     signUp: `${ROOTS.AUTH}/firebase/sign-up`,
-    //     resetPassword: `${ROOTS.AUTH}/firebase/reset-password`,
-    //   },
-    //   auth0: {
-    //     signIn: `${ROOTS.AUTH}/auth0/sign-in`,
-    //   },
-    //   supabase: {
-    //     signIn: `${ROOTS.AUTH}/supabase/sign-in`,
-    //     verify: `${ROOTS.AUTH}/supabase/verify`,
-    //     signUp: `${ROOTS.AUTH}/supabase/sign-up`,
-    //     updatePassword: `${ROOTS.AUTH}/supabase/update-password`,
-    //     resetPassword: `${ROOTS.AUTH}/supabase/reset-password`,
-    //   },
-    // },
-    // DASHBOARD
     dashboard: {
-      root: `${ROOTS.DASHBOARD}?query=${query}`,
-      two: `${ROOTS.DASHBOARD}/two`,
-      three: `${ROOTS.DASHBOARD}/three`,
+      root: `/?key_string=${query}`,
+      two: `/two/?key_string=${query}`,
+      three: `/three/?key_string=${query}`,
       group: group_list,
     },
   };
@@ -135,6 +103,8 @@ export function DashboardLayout({ sx, children, header, data, user, cases }: Das
       path: `${paths.dashboard.group[i]}`,
     });
   });
+  console.log("children_list: ", children_list);
+  
   const dashboardNavData = [
     {
       subheader: 'Main',
@@ -172,116 +142,11 @@ export function DashboardLayout({ sx, children, header, data, user, cases }: Das
   const isNavMini = settings.navLayout === 'mini';
   const isNavHorizontal = settings.navLayout === 'horizontal';
 
+  // console.log("user logging from DashboardLayout: ", user);
+  console.log("cases: ", cases);
+  
   return (
     <LayoutSection
-      /** **************************************
-       * Header
-       *************************************** */
-      // headerSection={
-      //   <HeaderSection
-      //     layoutQuery={layoutQuery}
-      //     disableElevation={isNavVertical}
-      //     slotProps={{
-      //       toolbar: {
-      //         sx: {
-      //           ...(isNavHorizontal && {
-      //             bgcolor: 'var(--layout-nav-bg)',
-      //             [`& .${iconButtonClasses.root}`]: {
-      //               color: 'var(--layout-nav-text-secondary-color)',
-      //             },
-      //             [theme.breakpoints.up(layoutQuery)]: {
-      //               height: 'var(--layout-nav-horizontal-height)',
-      //             },
-      //           }),
-      //         },
-      //       },
-      //       container: {
-      //         maxWidth: false,
-      //         sx: {
-      //           ...(isNavVertical && { px: { [layoutQuery]: 5 } }),
-      //         },
-      //       },
-      //     }}
-      //     sx={header?.sx}
-      //     slots={{
-      //       topArea: (
-      //         <Alert severity="info" sx={{ display: 'none', borderRadius: 0 }}>
-      //           This is an info Alert.
-      //         </Alert>
-      //       ),
-      //       bottomArea: isNavHorizontal ? (
-      //         <NavHorizontal
-      //           data={navData}
-      //           layoutQuery={layoutQuery}
-      //           cssVars={navColorVars.section}
-      //         />
-      //       ) : null,
-      //       leftArea: (
-      //         <>
-      //           {/* -- Nav mobile -- */}
-      //           <MenuButton
-      //             onClick={mobileNavOpen.onTrue}
-      //             sx={{
-      //               mr: 1,
-      //               ml: -1,
-      //               [theme.breakpoints.up(layoutQuery)]: { display: 'none' },
-      //             }}
-      //           />
-      //           <NavMobile
-      //             data={navData}
-      //             open={mobileNavOpen.value}
-      //             onClose={mobileNavOpen.onFalse}
-      //             cssVars={navColorVars.section}
-      //           />
-      //           {/* -- Logo -- */}
-      //           {isNavHorizontal && (
-      //             <Logo
-      //               sx={{
-      //                 display: 'none',
-      //                 [theme.breakpoints.up(layoutQuery)]: { display: 'inline-flex' },
-      //               }}
-      //             />
-      //           )}
-      //           {/* -- Divider -- */}
-      //           {isNavHorizontal && (
-      //             <StyledDivider
-      //               sx={{ [theme.breakpoints.up(layoutQuery)]: { display: 'flex' } }}
-      //             />
-      //           )}
-      //           {/* -- Workspace popover -- */}
-      //           <WorkspacesPopover
-      //             data={_workspaces}
-      //             sx={{ color: 'var(--layout-nav-text-primary-color)' }}
-      //           />
-      //         </>
-      //       ),
-      //       rightArea: (
-      //         <Box display="flex" alignItems="center" gap={{ xs: 0, sm: 0.75 }}>
-      //           {/* -- Searchbar -- */}
-      //           <Searchbar data={navData} />
-      //           {/* -- Language popover -- */}
-      //           <LanguagePopover
-      //             data={[
-      //               { value: 'en', label: 'English', countryCode: 'GB' },
-      //               { value: 'fr', label: 'French', countryCode: 'FR' },
-      //               { value: 'vi', label: 'Vietnamese', countryCode: 'VN' },
-      //               { value: 'cn', label: 'Chinese', countryCode: 'CN' },
-      //               { value: 'ar', label: 'Arabic', countryCode: 'SA' },
-      //             ]}
-      //           />
-      //           {/* -- Notifications popover -- */}
-      //           <NotificationsDrawer data={_notifications} />
-      //           {/* -- Contacts popover -- */}
-      //           <ContactsPopover data={_contacts} />
-      //           {/* -- Settings button -- */}
-      //           <SettingsButton />
-      //           {/* -- Account drawer -- */}
-      //           <AccountDrawer data={_account} />
-      //         </Box>
-      //       ),
-      //     }}
-      //   />
-      // }
       /** **************************************
        * Sidebar
        *************************************** */

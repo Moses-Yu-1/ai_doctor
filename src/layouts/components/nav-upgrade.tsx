@@ -20,8 +20,13 @@ import { useMockedUser } from 'src/auth/hooks';
 
 // ----------------------------------------------------------------------
 
-export function NavUpgrade({ userData, sx, ...other }: StackProps) {
+type NavUpgradeProps = StackProps & {
+  userData: any;
+};
+
+export function NavUpgrade({ userData, sx, ...other }: NavUpgradeProps) {
   const { user } = useMockedUser();
+  // console.log('userData logging from NavUpgrade', userData);
 
   return (
     <Stack sx={{ px: 2, py: 5, textAlign: 'center', ...sx }} {...other}>
@@ -53,7 +58,7 @@ export function NavUpgrade({ userData, sx, ...other }: StackProps) {
             noWrap
             sx={{ color: 'var(--layout-nav-text-primary-color)' }}
           >
-            {userData?.name} | {userData?.general_info.age} | {userData?.general_info.gender}
+            {userData?.name} | {userData?.general_info?.age} | {userData?.general_info?.gender}
           </Typography>
 
           <Typography
@@ -61,7 +66,7 @@ export function NavUpgrade({ userData, sx, ...other }: StackProps) {
             noWrap
             sx={{ color: 'var(--layout-nav-text-disabled-color)' }}
           >
-            {userData?.general_info.country} | {userData?.general_info.job}
+            {userData?.general_info?.country} | {userData?.general_info?.job}
           </Typography>
         </Stack>
 

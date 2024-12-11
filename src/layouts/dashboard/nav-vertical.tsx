@@ -24,6 +24,7 @@ export type NavVerticalProps = NavSectionProps & {
     bottomArea?: React.ReactNode;
   };
   user: any;
+  data?: any;
 };
 
 export function NavVertical({

@@ -12,125 +12,123 @@ import { ChatMessageNone } from './sub/chat-message-none';
 
 type Props = {
   apiData?: any;
+  query: string | null;
 };
 
-export default function Page({ apiData }: Props) {
+export default function Page({ apiData, query }: Props) {
   const idx = Number(useParams().id);
 
   const summary_data = {
-    title: 'Occaecati est',
+    title: 'Summary',
     detail:
       'Occaecati est et illo quibusdam accusamus qui. Incidunt aut et molestiae ut facere aut. Est quidem iusto praesentium excepturi harum nihil tenetur facilis. Ut omnis voluptates nihil accusantium doloribus eaque debitis. Occaecati est et illo quibusdam accusamus qui. Incidunt aut et molestiae ut facere aut. Est quidem iusto praesentium excepturi harum nihil tenetur facilis. Ut omnis voluptates nihil accusantium doloribus eaque debitis.Occaecati est et illo quibusdam accusamus qui. Incidunt aut et molestiae ut facere aut. Est quidem iusto praesentium excepturi harum nihil tenetur facilis. Ut omnis voluptates nihil accusantium doloribus eaque debitis.',
   };
-  const history_data = [...Array(12)].map((_, index) => {
-    const category = [
-      'CC',
-      'O',
-      'L',
-      'D',
-      'C',
-      'F',
-      'A',
-      'Trauma History',
-      'Past History',
-      'Family History',
-      'Medicine History',
-      'Social History',
-    ][index];
-    const content = [
-      apiData.medical_info.cases[idx].CC,
-      apiData.medical_info.cases[idx].O,
-      apiData.medical_info.cases[idx].L,
-      apiData.medical_info.cases[idx].D,
-      apiData.medical_info.cases[idx].C,
-      apiData.medical_info.cases[idx].F,
-      apiData.medical_info.cases[idx].A,
+  const history_data = [...Array(12)]
+    .map((_, index) => {
+      const category = [
+        'Cheif Complaint',
+        'On set',
+        'Location',
+        'Duration',
+        'Characteristic',
+        'Aggravating/Worsening Factors',
+        'Associated Symptoms',
+        'Trauma History',
+        'Past History',
+        'Family History',
+        'Medicine History',
+        'Social History',
+      ][index];
+      const content = [
+        apiData.medical_info.cases[idx].CC,
+        apiData.medical_info.cases[idx].O,
+        apiData.medical_info.cases[idx].L,
+        apiData.medical_info.cases[idx].D,
+        apiData.medical_info.cases[idx].C,
+        apiData.medical_info.cases[idx].F,
+        apiData.medical_info.cases[idx].A,
 
-      apiData.medical_info.histories[0].trauma_history,
-      apiData.medical_info.histories[0].past_medical_history,
-      apiData.medical_info.histories[0].family_history,
-      apiData.medical_info.histories[0].medication_history,
-      apiData.medical_info.histories[0].social_history,
-    ][index];
+        apiData.medical_info.histories[0].trauma_history,
+        apiData.medical_info.histories[0].past_medical_history,
+        apiData.medical_info.histories[0].family_history,
+        apiData.medical_info.histories[0].medication_history,
+        apiData.medical_info.histories[0].social_history,
+      ][index];
 
-    return {
-      id: index,
-      category,
-      content,
-    };
-  });
+      return {
+        id: index, // Ensure unique key
+        category,
+        content,
+      };
+    })
+    .filter((item) => item.content !== null);
 
   return (
-    <>
+    <Box
+      sx={{
+        margin: '72px',
+        // marginBottom: '0',
+      }}
+    >
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ flex: '65%' }}>
+          <Typography variant="h2" sx={{ mb: '32px' }}>
+            {apiData.medical_info.cases[idx].CC}
+          </Typography>
+        </Box>
+        <Box sx={{ flex: '35%', px: '8px' }}>
+          <Typography variant="h6" sx={{ mb: '16px', textAlign: 'right' }}>
+            {apiData.medical_info.cases[idx].date}
+          </Typography>
+        </Box>
+      </Box>
+
+      <Box>
+        <Box sx={{ display: 'flex' }}>
+          <Box sx={{ flex: '65%' }}>
+            <SummaryDetailsContent data={summary_data} />
+          </Box>
+          <Box sx={{ flex: '35%', paddingLeft: '16px' }}>
+            {apiData.medical_info.cases[idx].chat_log ? (
+              <ChatMessageList messages={apiData.medical_info.cases[idx].chat_log.chats} />
+            ) : (
+              <ChatMessageNone />
+            )}
+          </Box>
+        </Box>
+      </Box>
+
       <Box
         sx={{
-          margin: '72px',
-          // marginBottom: '0',
+          marginTop: '32px',
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Box sx={{ flex: '65%' }}>
-            <Typography variant="h2" sx={{ mb: '32px' }}>
-              {apiData.medical_info.cases[idx].CC}
-            </Typography>
-          </Box>
-          <Box sx={{ flex: '35%', px: '8px' }}>
-            <Typography variant="h6" sx={{ mb: '16px', textAlign: 'right' }}>
-              {apiData.medical_info.cases[idx].date}
-            </Typography>
-          </Box>
-        </Box>
+        <Typography variant="h4" sx={{ mb: '8px' }}>
+          Case
+        </Typography>
+        <History
+          type="1"
+          tableData={history_data}
+          headLabel={[
+            { id: 'category', label: 'Category' },
+            { id: 'content', label: 'Content' },
+          ]}
+        />
+      </Box>
 
-        <Box>
-          <Typography variant="h4" sx={{ mb: '8px' }}>
-            Summary
-          </Typography>
-          <Box sx={{ display: 'flex' }}>
-            <Box sx={{ flex: '65%' }}>
-              <SummaryDetailsContent data={summary_data} />
-            </Box>
-            <Box sx={{ flex: '35%', paddingLeft: '16px' }}>
-              {apiData.medical_info.cases[idx].chat_log ? (
-                <ChatMessageList messages={apiData.medical_info.cases[idx].chat_log.chats} />
-              ) : (
-                <ChatMessageNone />
-              )}
-            </Box>
-          </Box>
-        </Box>
-
+      {apiData.medical_info.cases[idx].followups.length === 0 ? null : (
         <Box
           sx={{
             marginTop: '32px',
           }}
         >
           <Typography variant="h4" sx={{ mb: '8px' }}>
-            Case
+            Follow Up
           </Typography>
-          <History
-            type="1"
-            tableData={history_data}
-            headLabel={[
-              { id: 'category', label: 'Category' },
-              { id: 'content', label: 'Content' },
-            ]}
-          />
+
+          <BookingNewest list={apiData.medical_info.cases[idx].followups} />
         </Box>
-
-        {apiData.medical_info.cases[idx].followups.length === 0 ? null : (
-          <Box
-            sx={{
-              marginTop: '32px',
-            }}
-          >
-            <Typography variant="h4" sx={{ mb: '8px' }}>
-              Follow Up
-            </Typography>
-
-            <BookingNewest list={apiData.medical_info.cases[idx].followups} />
-          </Box>
-        )}
-      </Box>
-    </>
+      )}
+    </Box>
   );
 }
