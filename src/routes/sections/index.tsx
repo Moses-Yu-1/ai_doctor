@@ -8,7 +8,7 @@ import { DashboardLayout } from 'src/layouts/dashboard';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { LoadingScreen } from 'src/components/loading-screen';
 
-import { authRoutes } from './auth';
+// import { authRoutes } from './auth';
 import { mainRoutes } from './main';
 
 // ----------------------------------------------------------------------
