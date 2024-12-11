@@ -8,7 +8,7 @@ import { DashboardLayout } from 'src/layouts/dashboard';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { LoadingScreen } from 'src/components/loading-screen';
 
-import { authRoutes } from './auth';
+// import { authRoutes } from './auth';
 import { mainRoutes } from './main';
 
 // ----------------------------------------------------------------------
@@ -67,12 +67,12 @@ export function Router({ query }: Props) {
     },
 
     // Auth
-    ...authRoutes,
+    // ...authRoutes,
 
     // Dashboard
     {
       path: 'dashboard',
-      element: CONFIG.auth.skip ? <>{layoutContent}</> : <AuthGuard>{layoutContent}</AuthGuard>,
+      element: <>{layoutContent}</>,
       children: [
         { element: <IndexPage apiData={apiData} />, index: true },
         {
