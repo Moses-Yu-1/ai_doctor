@@ -27,6 +27,8 @@ type Props = BoxProps & {
 };
 
 export function BookingNewest({ list, sx, ...other }: Props) {
+  const reversedList = [...list].reverse(); // Reverse the list
+
   const carousel = useCarousel({
     align: 'start',
     slideSpacing: '24px',
@@ -44,12 +46,12 @@ export function BookingNewest({ list, sx, ...other }: Props) {
   return (
     <>
       <Box sx={{ background: '#F6F6F6', padding: '16px', borderRadius: '16px' }}>
-        <FollowUp detail={list[followUP_idx]} />
+        <FollowUp detail={reversedList[followUP_idx]} />
       </Box>
 
       <Box sx={{ py: 2, ...sx }} {...other}>
         <Carousel carousel={carousel}>
-          {list.map((item, index) => (
+          {reversedList.map((item, index) => (
             <Box key={index} sx={{ cursor: 'pointer' }} onClick={() => handleClick(index)}>
               <SummaryFollowUpContent
                 data={{
