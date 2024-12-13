@@ -17,7 +17,7 @@ type Props = CardProps & {
   type?: string;
 };
 
-export function History({ tableData, headLabel, type }: Props) {
+export function HistoryTable({ tableData, headLabel, type }: Props) {
   return (
     <Card>
       <Scrollbar>

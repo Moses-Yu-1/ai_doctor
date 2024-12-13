@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { SummaryDetailsContent } from '../sub/SummaryDetailsContent';
-import { History } from '../sub/History';
+import { HistoryTable } from '../sub/History';
 import { ChatMessageList } from '../sub/chat-message-list';
 import { ChatMessageNone } from '../sub/chat-message-none';
 
@@ -73,7 +73,7 @@ export function FollowUp({ detail }: Props) {
       </Box>
 
       <Box sx={{ marginTop: '16px' }}>
-        <History
+        <HistoryTable
           type="0"
           tableData={history_data}
           headLabel={[

@@ -8,6 +8,7 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { LoadingScreen } from 'src/components/loading-screen';
 
 // import { authRoutes } from './auth';
+import { ApiData } from 'src/types/apiData';
 import { mainRoutes } from './main';
 
 // ----------------------------------------------------------------------
@@ -20,125 +21,29 @@ const PageFour = lazy(() => import('src/pages/dashboard/four'));
 type Props = {
   query: string | null;
 };
-type ApiData = {
-  user_id: number | null;
-  number: string | null;
-  name: string | null;
-  general_info: {
-    id: number | null;
-    age: string | null;
-    job: string | null;
-    gender: string | null;
-    country: string | null;
-    user_id: number;
-  } | null;
-  medical_info: {
-    id: number | null;
-    user_id: number;
-    lab_tests:
-      | {
-          id: number | null;
-          bp: string | null;
-          date: string | null;
-          pulse: string | null;
-          weight: string | null;
-          breathing: string | null;
-          blood_sugar: string | null;
-          temperature: string | null;
-          medical_info_id: number;
-        }[]
-      | null;
-    histories:
-      | {
-          id: number | null;
-          date: string | null;
-          family_history: string | null;
-          social_history: string | null;
-          trauma_history: string | null;
-          medication_history: string | null;
-          past_medical_history: string | null;
-          medical_info_id: number;
-        }[]
-      | null;
-    cases:
-      | {
-          id: number | null;
-          followups:
-            | {
-                id: number | null;
-                date: string | null;
-                medicine: string | null;
-                progress: string | null;
-                new_symptoms: string | null;
-                side_effects: string | null;
-                doctor_opinion: string | null;
-                symptom_changes: string | null;
-                followup_summary: string | null;
-                impact_on_daily_life: string | null;
-                medication_effectiveness: string | null;
-                case_id: number;
-                chat_log: {
-                  id: number | null;
-                  date: string | null;
-                  chats:
-                    | {
-                        id: number | null;
-                        date: string | null;
-                        type: string | null;
-                        data: string | null;
-                      }[]
-                    | null;
-                  summary: string | null;
-                  case_id: number | null;
-                  followup_id: number | null;
-                } | null;
-              }[]
-            | null;
-          chat_log: {
-            id: number | null;
-            date: string | null;
-            chats:
-              | {
-                  id: number | null;
-                  date: string | null;
-                  type: string | null;
-                  data: string | null;
-                }[]
-              | null;
-            summary: string | null;
-            case_id: number | null;
-            followup_id: number | null;
-          } | null;
-          A: string | null;
-          C: string | null;
-          summary: string | null;
-          D: string | null;
-          F: string | null;
-          L: string | null;
-          O: string | null;
-          CC: string | null;
-          date: string | null;
-          medical_info_id: number;
-        }[]
-      | null;
-  } | null;
-};
 
 export function Router({ query }: Props) {
   const [apiData, setApiData] = useState<ApiData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // console.log("query from Router: ", query); // Log the query string
+  
   useEffect(() => {
     // 데이터 요청을 위한 API 호출
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:5050/user/${query}`);
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/user/${query}`);
+        // console.log("response from fetchData: ", response); // Log the response object
+        // console.log("response status: ", response.status); // Log the response status
+        // console.log("response headers: ", response.headers); // Log the response headers
+        
         if (!response.ok) {
           throw new Error(`Data fetching failed with status: ${response.status}`);
         }
         const result = await response.json();
         // console.log("result from fetchData: ", result); // Log the entire result object
+        // console.log("result keys: ", Object.keys(result)); // Log the keys of the result object
         
         // Check if result.user_id exists before accessing it
         if (result && result.user_id) {
@@ -151,15 +56,13 @@ export function Router({ query }: Props) {
       } catch (err) {
         if (err instanceof TypeError) {
           setError('Network error or CORS issue');
+          // console.error('Network error or CORS issue:', err);
         } else {
           setError(err.message); // Handle other errors
-          console.log(err);
-          
+          // console.error('Error fetching data:', err);
         }
       } finally {
         setLoading(false); // End loading
-
-        
       }
     };
 
@@ -187,7 +90,7 @@ export function Router({ query }: Props) {
         </DashboardLayout>
       ),
       children: [
-        { element: <IndexPage query={query} apiData={apiData} />, index: true },
+        { element: apiData ? <IndexPage query={query} apiData={apiData} /> : <LoadingScreen />, index: true },
         {
           path: `group/:id`,
           element: <PageFour query={query} apiData={apiData} />,

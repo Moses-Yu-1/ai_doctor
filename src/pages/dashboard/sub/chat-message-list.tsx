@@ -14,33 +14,31 @@ export function ChatMessageList({ messages = [] }: Props) {
   const { messagesEndRef } = useMessagesScroll(messages);
 
   return (
-    <>
-      <Box
+    <Box
+      sx={{
+        // border: '1px solid black',
+        borderRadius: '16px',
+        background: 'white',
+        boxShadow: '0 0 2px 0 rgba(145 158 171 / 0.2), 0 12px 24px -4px rgba(145 158 171 / 0.12)',
+      }}
+    >
+      <Scrollbar
+        ref={messagesEndRef}
         sx={{
-          // border: '1px solid black',
-          borderRadius: '16px',
-          background: 'white',
-          boxShadow: '0 0 2px 0 rgba(145 158 171 / 0.2), 0 12px 24px -4px rgba(145 158 171 / 0.12)',
+          // pl: 1,
+          // px: 3,
+          // pt: 5,
+          // pb: 3,
+          padding: '24px 24px 24px 12px',
+          flex: '1 1 auto',
+          height: '420px',
+          maxHeight: '420px',
         }}
       >
-        <Scrollbar
-          ref={messagesEndRef}
-          sx={{
-            // pl: 1,
-            // px: 3,
-            // pt: 5,
-            // pb: 3,
-            padding: '24px 24px 24px 12px',
-            flex: '1 1 auto',
-            height: '420px',
-            maxHeight: '420px',
-          }}
-        >
-          {messages.map((message: any) => (
-            <ChatMessageItem key={message.id} message={message.data} type={message.type} />
-          ))}
-        </Scrollbar>
-      </Box>
-    </>
+        {messages.map((message: any, index: number) => (
+          <ChatMessageItem key={message.id ? message.id : index} message={message.data} type={message.type} />
+        ))}
+      </Scrollbar>
+    </Box>
   );
 }
